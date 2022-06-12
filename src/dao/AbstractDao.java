@@ -9,7 +9,7 @@ public abstract class AbstractDao<T> {
 
     protected Connection connection;
 
-    public abstract boolean insert(T object);
+    public abstract T insert(T object);
 
     public abstract List<T> findAll();
 

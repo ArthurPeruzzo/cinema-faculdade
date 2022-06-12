@@ -18,7 +18,8 @@ public class FilmeDao extends AbstractDao<Filme> {
     }
 
     @Override
-    public boolean insert(Filme filme) {
+    public Filme insert(Filme filme) {
+        Filme filmeSalvo = new Filme();
         try {
             if (filme != null) {
                 preparedStatement = super.connection.prepareStatement("INSERT INTO filme (nome, estreia, preestreia) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -27,8 +28,8 @@ public class FilmeDao extends AbstractDao<Filme> {
                 preparedStatement.setTimestamp(3, Timestamp.valueOf(dateTimeFormatter.format(filme.getDataHoraPreEstreia())));
                 preparedStatement.executeUpdate();
                 resultSet = preparedStatement.getGeneratedKeys();
+
                 while (resultSet.next()) {
-                    Filme filmeSalvo = new Filme();
                     filmeSalvo.setId(resultSet.getLong("id"));
                     filmeSalvo.setNome(resultSet.getString("nome"));
                     filmeSalvo.setDataHoraEstreia(resultSet.getTimestamp("estreia").toLocalDateTime());
@@ -38,7 +39,7 @@ public class FilmeDao extends AbstractDao<Filme> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return filmeSalvo;
     }
 
     @Override

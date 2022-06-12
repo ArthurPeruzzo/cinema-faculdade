@@ -28,6 +28,10 @@ public class Filme {
         this.dataHoraPreEstreia = dataHoraPreEstreia;
     }
 
+    public Filme(long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

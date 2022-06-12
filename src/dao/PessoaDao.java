@@ -18,7 +18,8 @@ public class PessoaDao extends AbstractDao<Pessoa> {
     }
 
     @Override
-    public boolean insert(Pessoa pessoa) {
+    public Pessoa insert(Pessoa pessoa) {
+        Pessoa pessoaSalva = new Pessoa();
         try {
             if (pessoa != null) {
                 preparedStatement = super.connection.prepareStatement("INSERT INTO pessoa (nome, email, senha, cpf) values (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -29,14 +30,14 @@ public class PessoaDao extends AbstractDao<Pessoa> {
                 preparedStatement.executeUpdate();
                 resultSet = preparedStatement.getGeneratedKeys();
                 while (resultSet.next()) {
-                    Pessoa pessoaSalva = new Pessoa();
+
 
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return pessoaSalva;
     }
 
     @Override
