@@ -1,7 +1,7 @@
 package dao;
 
 import model.Filme;
-import model.Horario;
+import model.HorarioSessao;
 import model.Sala;
 
 import java.sql.*;
@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorarioDao extends AbstractDao<Horario> {
+public class HorarioDao extends AbstractDao<HorarioSessao> {
 
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -20,46 +20,46 @@ public class HorarioDao extends AbstractDao<Horario> {
     }
 
     @Override
-    public Horario insert(Horario horario) {
-        Horario horarioSalvo = new Horario();
+    public HorarioSessao insert(HorarioSessao horarioSessao) {
+        HorarioSessao horarioSessaoSalvo = new HorarioSessao();
         try {
-            if (horario != null) {
+            if (horarioSessao != null) {
                 preparedStatement = super.connection.prepareStatement("INSERT INTO horario (salaid, filmeid, datahora) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setLong(1, horario.getSala().getId());
-                preparedStatement.setLong(2, horario.getFilme().getId());
-                preparedStatement.setTimestamp(3, Timestamp.valueOf(dateTimeFormatter.format(horario.getDataHora())));
+                preparedStatement.setLong(1, horarioSessao.getSala().getId());
+                preparedStatement.setLong(2, horarioSessao.getFilme().getId());
+                preparedStatement.setTimestamp(3, Timestamp.valueOf(dateTimeFormatter.format(horarioSessao.getDataHora())));
                 preparedStatement.executeUpdate();
                 resultSet = preparedStatement.getGeneratedKeys();
 
                 while (resultSet.next()) {
-                    horarioSalvo.setSala(new Sala(resultSet.getLong("salaid")));
-                    horarioSalvo.setFilme(new Filme(resultSet.getLong("filmeid")));
-                    horarioSalvo.setDataHora(resultSet.getTimestamp("datahora").toLocalDateTime());
+                    horarioSessaoSalvo.setSala(new Sala(resultSet.getLong("salaid")));
+                    horarioSessaoSalvo.setFilme(new Filme(resultSet.getLong("filmeid")));
+                    horarioSessaoSalvo.setDataHora(resultSet.getTimestamp("datahora").toLocalDateTime());
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return horarioSalvo;
+        return horarioSessaoSalvo;
     }
 
     @Override
-    public List<Horario> findAll() {
-        List<Horario> horarios = new ArrayList<>();
+    public List<HorarioSessao> findAll() {
+        List<HorarioSessao> horarioSessaos = new ArrayList<>();
         try {
             preparedStatement = super.connection.prepareStatement("select * from horario f");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Horario horario = new Horario();
-                horario.setSala(new Sala(resultSet.getLong("salaid")));
-                horario.setFilme(new Filme(resultSet.getLong("filmeid")));
-                horario.setDataHora(resultSet.getTimestamp("datahora").toLocalDateTime());
-                horarios.add(horario);
+                HorarioSessao horarioSessao = new HorarioSessao();
+                horarioSessao.setSala(new Sala(resultSet.getLong("salaid")));
+                horarioSessao.setFilme(new Filme(resultSet.getLong("filmeid")));
+                horarioSessao.setDataHora(resultSet.getTimestamp("datahora").toLocalDateTime());
+                horarioSessaos.add(horarioSessao);
             }
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        return horarios;
+        return horarioSessaos;
     }
 
     @Override
@@ -68,12 +68,12 @@ public class HorarioDao extends AbstractDao<Horario> {
     }
 
     @Override
-    public Horario findById(int id) {
+    public HorarioSessao findById(int id) {
         return null;
     }
 
     @Override
-    public boolean update(Horario object) {
+    public boolean update(HorarioSessao object) {
         return false;
     }
 }

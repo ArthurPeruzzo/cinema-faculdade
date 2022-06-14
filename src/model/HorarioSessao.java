@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 
-public class Horario {
+public class HorarioSessao {
 
     private LocalDateTime dataHora;
 
@@ -10,10 +10,10 @@ public class Horario {
 
     private Filme filme;
 
-    public Horario() {
+    public HorarioSessao() {
     }
 
-    public Horario(LocalDateTime dataHora, Sala sala, Filme filme) {
+    public HorarioSessao(LocalDateTime dataHora, Sala sala, Filme filme) {
         this.dataHora = dataHora;
         this.sala = sala;
         this.filme = filme;
